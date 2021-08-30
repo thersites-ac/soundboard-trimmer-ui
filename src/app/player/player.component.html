@@ -1,0 +1,44 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div class="media-footer">
+      <mat-toolbar color="primary">
+        <mat-toolbar-row>
+           <mat-slider
+             min="0"
+             [max]="state.duration"
+             [value]="state.relativePosition"
+             [step]="state.duration/60"
+             (click)="unimplemented()"></mat-slider>
+        </mat-toolbar-row>
+        <mat-toolbar-row class="media-action-bar">
+          <button
+            mat-button
+            [disabled]="!state.canSeek"
+            (click)="restart()">
+            <mat-icon mat-list-icon>replay</mat-icon>
+          </button>
+          <button
+            mat-button
+            (click)="play()"
+            [disabled]="!state.canPlay"
+            *ngIf="!state.playing">
+            <mat-icon mat-list-icon>play_circle_filled</mat-icon>
+          </button>
+          <button
+            mat-button
+            (click)="pause()"
+            *ngIf="state.playing"
+            [disabled]="!state.canPlay">
+            <mat-icon mat-list-icon>pause</mat-icon>
+          </button>
+          <button 
+            mat-button
+            [disabled]="!state.canSeek"
+            (click)="advance()">
+            <mat-icon mat-list-icon>fast_forward</mat-icon>
+          </button>
+        </mat-toolbar-row>
+      </mat-toolbar>
+    </div>
+  </div>
+</div>

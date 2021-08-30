@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-xs-12">
+      <form #f="ngForm" (ngSubmit)="submit(f)">
+        <div class="form-group">
+          <label for="start">Audio start</label>
+            <input
+              class="form-control"
+              name="start"
+              type="range"
+              min="0"
+              [max]="maxDuration"
+              step=0.001
+              #s
+              [(ngModel)]="start">
+            <p>{{s.value}}s</p>
+        </div>
+        <div class="form-group">
+          <label for="end">Audio end</label>
+            <input
+              class="form-control"
+              name="end"
+              type="range"
+              min="0"
+              step="0.001"
+              [max]="maxDuration"
+              #e
+              [(ngModel)]="end">
+            <p>{{e.value}}s</p>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <button class="btn btn-primary" (click)="trim()">Trim</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <button class="btn btn-success" type="submit">Create clip</button>
+          </div>
+        </div>
+      </form>
+  </div>
+</div>

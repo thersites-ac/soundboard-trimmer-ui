@@ -1,0 +1,9 @@
+button {
+  width: 100%;
+  margin-top: 5px;
+}
+
+.match-color {
+  background-color: #3F51B5;
+  color: #FFFFFF;
+}

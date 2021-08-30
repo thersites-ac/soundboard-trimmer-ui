@@ -1,0 +1,15 @@
+.row {
+  padding-top: 10px;
+}
+
+mat-toolbar-row {
+  justify-content: center;
+}
+
+mat-slider {
+  width: 100%;
+}
+
+mat-toolbar {
+  border-radius: .5rem;
+}
