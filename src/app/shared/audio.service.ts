@@ -7,9 +7,7 @@ import { State } from './state.model';
 })
 export class AudioService {
 
-  private url: string = 'https://ia801504.us.archive.org/3/items/EdSheeranPerfectOfficialMusicVideoListenVid.com/Ed_Sheeran_-_Perfect_Official_Music_Video%5BListenVid.com%5D.mp3';
-
-  private audio: HTMLAudioElement = new Audio(this.url);
+  private audio: HTMLAudioElement = new Audio();
   private state: State = new State(false, false, false, 0, 0);
 
   private start: number = 0;
@@ -18,7 +16,6 @@ export class AudioService {
   stateChanged: Subject<State> = new Subject();
 
   constructor() {
-    this.audio.load();
     this.audio.onloadeddata = () => {
       this.state.canPlay = true;
       this.state.canSeek = true;
@@ -62,6 +59,11 @@ export class AudioService {
     };
   }
 
+  init(url: string) {
+    this.audio.src = url;
+    this.audio.load();
+  }
+
   play() {
     this.audio.play();
   }
@@ -97,7 +99,6 @@ export class AudioService {
   goToStart() {
     this.audio.currentTime = this.start;
     this.state.relativePosition = 0;
-    console.log(this.state);
     this.audio.pause();
   }
 

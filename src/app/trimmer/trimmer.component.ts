@@ -11,6 +11,8 @@ import { State } from '../shared/state.model';
 })
 export class TrimmerComponent {
 
+  name: string = '';
+
   start: number = 0;
   end: number = 0;
   maxDuration: number = 0;
@@ -25,7 +27,6 @@ export class TrimmerComponent {
   }
 
   trim() {
-    console.log('trimming:', this.start, this.end);
     if (this.start < this.end)
       this.audioService.resetBoundaries(this.start, this.end);
   }

@@ -7,14 +7,18 @@ import { PlayerComponent } from './player/player.component';
 import { TrimmerComponent } from './trimmer/trimmer.component';
 import { MaterialModule } from './material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppRoutingModule } from './app-routing.module';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PlayerComponent,
-    TrimmerComponent
+    TrimmerComponent,
+    HeaderComponent
   ],
   imports: [
+    AppRoutingModule,
     BrowserModule,
     FormsModule,
     MaterialModule,
