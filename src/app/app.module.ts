@@ -9,6 +9,7 @@ import { MaterialModule } from './material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { HeaderComponent } from './header/header.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { HeaderComponent } from './header/header.component';
     AppRoutingModule,
     BrowserModule,
     FormsModule,
+    HttpClientModule,
     MaterialModule,
     BrowserAnimationsModule
   ],

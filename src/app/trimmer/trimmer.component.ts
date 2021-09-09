@@ -11,7 +11,7 @@ import { State } from '../shared/state.model';
 })
 export class TrimmerComponent {
 
-  name: string = '';
+  title: string = '';
 
   start: number = 0;
   end: number = 0;
@@ -32,7 +32,8 @@ export class TrimmerComponent {
   }
 
   submit(form: NgForm) {
-    console.log(form);
+    const data = form.value
+    this.audioService.trim(data.start, data.end, data.title);
   }
 
 

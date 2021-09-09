@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { State } from './state.model';
@@ -7,6 +8,10 @@ import { State } from './state.model';
 })
 export class AudioService {
 
+  private endpoint: string = 'https://odvdqq5q62.execute-api.us-east-2.amazonaws.com/Prod/trim';
+
+
+  private key: string = '';
   private audio: HTMLAudioElement = new Audio();
   private state: State = new State(false, false, false, 0, 0);
 
@@ -15,7 +20,7 @@ export class AudioService {
 
   stateChanged: Subject<State> = new Subject();
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.audio.onloadeddata = () => {
       this.state.canPlay = true;
       this.state.canSeek = true;
@@ -59,9 +64,10 @@ export class AudioService {
     };
   }
 
-  init(url: string) {
+  init(url: string, key: string) {
     this.audio.src = url;
     this.audio.load();
+    this.key = key
   }
 
   play() {
@@ -100,6 +106,17 @@ export class AudioService {
     this.audio.currentTime = this.start;
     this.state.relativePosition = 0;
     this.audio.pause();
+  }
+
+  trim(start: number, end: number, title: string) {
+    this.http.post(this.endpoint, {
+      start,
+      end,
+      key: this.key,
+      title
+    }).toPromise()
+      .then(data => console.log(data))
+      .catch(err => console.log(err));
   }
 
 }

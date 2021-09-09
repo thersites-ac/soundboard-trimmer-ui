@@ -17,10 +17,11 @@ export class AppComponent implements OnDestroy {
   constructor(private audioService: AudioService,
               private route: ActivatedRoute) {
     this.subscription = this.route.queryParams.pipe(
-      filter(params => params.uri)
+      filter(params => params.uri && params.key)
     ).subscribe(params => {
       const uri = atob(params.uri);
-      this.audioService.init(uri);
+      const key = atob(params.key);
+      this.audioService.init(uri, key);
     });
   }
 
