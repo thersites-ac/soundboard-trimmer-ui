@@ -47,14 +47,29 @@
             Command for playback: ~{{n.value}}
           </div>
         </div>
-        <div class="row">
-          <div class="col-xs-12">
-            <button class="btn btn-primary" type="button" (click)="trim()">Trim</button>
+        <div *ngIf="requestState === 'unsent'">
+          <div class="row">
+            <div class="col-xs-12">
+              <button class="btn btn-primary" type="button" (click)="trim()">Trim</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <button class="btn btn-success" type="submit" [disabled]="!f.valid">Create clip</button>
+            </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-xs-12">
-            <button class="btn btn-success" type="submit" [disabled]="!f.valid">Create clip</button>
+        <div *ngIf="requestState === 'sending'">
+          <div class="loader">Loading...</div>
+        </div>
+        <div *ngIf="requestState === 'sent'">
+          <div class="jumbotron">
+            <h1>It's ready! Now go spam your channel with ~{{command}}</h1>
+          </div>
+        </div>
+        <div *ngIf="requestState === 'failed'">
+          <div class="jumbotron">
+            <h1>Error</h1>
           </div>
         </div>
       </form>

@@ -12,6 +12,8 @@ import { State } from '../shared/state.model';
 export class TrimmerComponent {
 
   title: string = '';
+  requestState: string = 'unsent';
+  command: string = '';
 
   start: number = 0;
   end: number = 0;
@@ -24,6 +26,7 @@ export class TrimmerComponent {
       this.maxDuration = (state as State).duration;
       this.end = this.maxDuration;
     });
+    this.audioService.requestState.subscribe(state => this.requestState = state)
   }
 
   trim() {
@@ -33,7 +36,8 @@ export class TrimmerComponent {
 
   submit(form: NgForm) {
     const data = form.value
-    this.audioService.trim(data.start, data.end, data.title);
+    this.command = data.title;
+    this.audioService.trim(data.start, data.end, this.command);
   }
 
 

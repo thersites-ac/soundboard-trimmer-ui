@@ -19,6 +19,7 @@ export class AudioService {
   private end: number = 0;
 
   stateChanged: Subject<State> = new Subject();
+  requestState: Subject<string> = new Subject();
 
   constructor(private http: HttpClient) {
     this.audio.onloadeddata = () => {
@@ -109,14 +110,15 @@ export class AudioService {
   }
 
   trim(start: number, end: number, title: string) {
+    this.requestState.next('sending');
     this.http.post(this.endpoint, {
       start,
       end,
       key: this.key,
       title
     }).toPromise()
-      .then(data => console.log(data))
-      .catch(err => console.log(err));
+      .then(() => this.requestState.next('sent'))
+      .catch(() => this.requestState.next('failed'));
   }
 
 }
