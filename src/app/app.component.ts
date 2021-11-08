@@ -19,8 +19,9 @@ export class AppComponent implements OnDestroy {
     this.subscription = this.route.queryParams.pipe(
       filter(params => params.uri && params.key)
     ).subscribe(params => {
-      const uri = atob(params.uri);
-      const key = atob(params.key);
+      const uri = params.uri;
+      const key = params.key;
+      console.log(uri, key);
       this.audioService.init(uri, key);
     });
   }
