@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { AudioService } from '../shared/audio.service';
 import { take } from 'rxjs/operators';
 import { State } from '../shared/state.model';
+import { TrimmerResponse } from '../shared/trimmerResponse.model';
 
 @Component({
   selector: 'app-trimmer',
@@ -12,7 +13,7 @@ import { State } from '../shared/state.model';
 export class TrimmerComponent {
 
   title: string = '';
-  requestState: string = 'unsent';
+  trimmerResponse: TrimmerResponse = new TrimmerResponse(0, '');
   command: string = '';
 
   start: number = 0;
@@ -26,7 +27,7 @@ export class TrimmerComponent {
       this.maxDuration = (state as State).duration;
       this.end = this.maxDuration;
     });
-    this.audioService.requestState.subscribe(state => this.requestState = state)
+    this.audioService.trimmerResponse.subscribe(state => this.trimmerResponse = state)
   }
 
   trim() {

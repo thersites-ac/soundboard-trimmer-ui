@@ -1,7 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { State } from './state.model';
+import { TrimmerResponse } from './trimmerResponse.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,7 @@ export class AudioService {
 
 
   private key: string = '';
+  private prefix: string = '';
   private audio: HTMLAudioElement = new Audio();
   private state: State = new State(false, false, false, 0, 0);
 
@@ -19,7 +22,7 @@ export class AudioService {
   private end: number = 0;
 
   stateChanged: Subject<State> = new Subject();
-  requestState: Subject<string> = new Subject();
+  trimmerResponse: Subject<TrimmerResponse> = new Subject();
 
   constructor(private http: HttpClient) {
     this.audio.onloadeddata = () => {
@@ -65,10 +68,11 @@ export class AudioService {
     };
   }
 
-  init(url: string, key: string) {
+  init(url: string, prefix: string, key: string) {
     this.audio.src = url;
     this.audio.load();
-    this.key = key
+    this.key = key;
+    this.prefix = prefix;
   }
 
   play() {
@@ -110,15 +114,17 @@ export class AudioService {
   }
 
   trim(start: number, end: number, title: string) {
-    this.requestState.next('sending');
+    this.trimmerResponse.next(new TrimmerResponse(-1, ''));
     this.http.post(this.endpoint, {
       start,
       end,
       key: this.key,
+      prefix: this.prefix,
       title
-    }).toPromise()
-      .then(() => this.requestState.next('sent'))
-      .catch(() => this.requestState.next('failed'));
+    }, { observe: 'response' })
+    .pipe(first())
+    .subscribe(resp => this.trimmerResponse.next(new TrimmerResponse(resp.status, '')),
+               (err: HttpErrorResponse) => this.trimmerResponse.next(new TrimmerResponse(err.status, err.error)));
   }
 
 }
