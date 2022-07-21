@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { AudioService } from '../shared/audio.service';
-import { take } from 'rxjs/operators';
+import { take, filter } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { State } from '../shared/state.model';
 import { TrimmerResponse } from '../shared/trimmerResponse.model';
 
@@ -15,12 +17,16 @@ export class TrimmerComponent {
   title: string = '';
   trimmerResponse: TrimmerResponse = new TrimmerResponse(0, '');
   command: string = '';
+  guildPrefix: string = '';
 
   start: number = 0;
   end: number = 0;
   maxDuration: number = 0;
 
-  constructor(public audioService: AudioService) {
+  subscription: Subscription;
+
+  constructor(public audioService: AudioService,
+              route: ActivatedRoute) {
     this.audioService.stateChanged.pipe(
       take(2)
     ).subscribe(state => {
@@ -28,6 +34,11 @@ export class TrimmerComponent {
       this.end = this.maxDuration;
     });
     this.audioService.trimmerResponse.subscribe(state => this.trimmerResponse = state)
+    this.subscription = route.queryParams.pipe(
+      filter(params => params.guild_prefix)
+    ).subscribe(params => {
+      this.guildPrefix = params.guild_prefix;
+    });
   }
 
   trim() {
@@ -37,9 +48,13 @@ export class TrimmerComponent {
 
   submit(form: NgForm) {
     const data = form.value
-    this.command = data.title;
+    this.command = this.guildPrefix + data.title;
     this.audioService.trim(data.start, data.end, this.command);
   }
 
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
 }

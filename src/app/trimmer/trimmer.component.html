@@ -39,12 +39,12 @@
           <div 
             *ngIf="!n.valid"
             class="alert alert-warning">
-            A name for the clip is required.
+            How will you tell Hippo to play a clip with no name?
           </div>
           <div 
             class="alert alert-success"
             *ngIf=n.valid>
-            Command for playback: ~{{n.value}}
+            Command for playback: {{guildPrefix + n.value}}
           </div>
         </div>
         <div *ngIf="trimmerResponse.statusCode === 0">
@@ -64,7 +64,7 @@
         </div>
         <div *ngIf="trimmerResponse.statusCode === 200">
           <div class="jumbotron">
-            <h1>It's ready! Now go spam your channel with ~{{command}}</h1>
+            <h1>It's ready! Now go spam your channel with {{command}}</h1>
           </div>
         </div>
         <div *ngIf="trimmerResponse.statusCode === 400">

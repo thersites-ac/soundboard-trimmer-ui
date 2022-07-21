@@ -14,16 +14,15 @@ export class AppComponent implements OnDestroy {
 
   subscription: Subscription;
 
-  constructor(private audioService: AudioService,
-              private route: ActivatedRoute) {
-    this.subscription = this.route.queryParams.pipe(
+  constructor(audioService: AudioService,
+              route: ActivatedRoute) {
+    this.subscription = route.queryParams.pipe(
       filter(params => params.uri && params.key && params.prefix)
     ).subscribe(params => {
       const uri = params.uri;
       const prefix = params.prefix;
       const key = params.key;
-      console.log(uri, prefix, key);
-      this.audioService.init(uri, prefix, key);
+      audioService.init(uri, prefix, key);
     });
   }
 
