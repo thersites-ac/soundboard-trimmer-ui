@@ -49,7 +49,7 @@ export class TrimmerComponent {
   submit(form: NgForm) {
     const data = form.value
     this.command = this.guildPrefix + data.title;
-    this.audioService.trim(data.start, data.end, this.command);
+    this.audioService.trim(data.start, data.end, data.title);
   }
 
 
